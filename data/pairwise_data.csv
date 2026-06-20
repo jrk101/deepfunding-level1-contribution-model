@@ -1,0 +1,188 @@
+repo_a,repo_b,winner,multiplier,reasoning
+succinctlabs/sp1,a16z/helios,succinctlabs/sp1,3,"SP1 is one of the major ZK-EVM provers and is already used in various projects in the Ethereum ecosystem. Helios is a light client verification software library. SP1 is one-of-many and Helios is close to unique (though now Colibri also exists), but SP1 is more mature and has much more mission-critical production usage."
+OffchainLabs/prysm,a16z/helios,OffchainLabs/prysm,5.5,"Consensus clients are critical for the operation of the Ethereum network, and Prysm is the second largest one, with ~22% market share. Helios does important work, but it is early-stage and not yet used by many projects. On the whole, intuitively, the Ethereum network existing at all is ~50x more important than light client access, consensus clients are half of that, and Prysm is ~22% of that, so 50 * 0.5 * 0.22 = 5.5"
+ethereum/go-ethereum,hyperledger/besu,ethereum/go-ethereum,1.5,"Geth has 41% market share, Besu 16%, in the same space (execution clients). But we give Besu relatively more score (than 16/41 of geth) because it contributes to client diversity more as a minority client."
+ethereum/go-ethereum,a16z/helios,ethereum/go-ethereum,10,"Intuitively, Ethereum existing at all is 50x more important than light client access (what Helios does). Exec clients get half of that, geth is 42%, but we penalize a bit because it's #1 so it contributes less to client diversity. So we get 50x * 0.5 * 0.3 = 7.5x, and then increase to 10x because Helios is not the only game in town on light client access (Colibri exists too)"
+hyperledger/besu,ethstaker/ethstaker-deposit-cli,hyperledger/besu,8,"Intuitively, Ethereum existing at all is ~50x more important than staking convenience. Execution clients are half of that, and Besu is 16% of that, so 50 * 0.5 * 0.16 = 8"
+ethers-io/ethers.js,hyperledger/besu,hyperledger/besu,1.2,"Intuitively, the Ethereum network is ~5x more important than the ability to access it with javascript. Exec  clients are responsible for half of that, and Besu is 16% of exec client market share. Meanwhile, ethers.js gets 1/3 of the credit for javascript usability. 5 * 0.5 * 0.16 = 0.4, compare to 0.333 for ethers.js, hence 1.2x"
+OffchainLabs/prysm,succinctlabs/sp1,OffchainLabs/prysm,1.67,"Consensus clients are critical for the operation of the Ethereum network, and Prysm is the second largest one, with ~22% market share. SP1 does important work, but not the only project in the ZK-EVM space. On the whole, intuitively, the Ethereum network existing at all is ~5x more important than the ZK-proving space. There, Succinct gets ~1/3 credit. Consensus clients are half of the ethereum network, and Prysm is ~22% of that, so 5 * 0.5 * 0.22 = 0.55, whereas succinct is 0.33, so we get ~1.67"
+OffchainLabs/prysm,succinctlabs/sp1,OffchainLabs/prysm,1.67,"Consensus clients are critical for the operation of the Ethereum network, and Prysm is the second largest one, with ~22% market share. SP1 does important work, but not the only project in the ZK-EVM space. On the whole, intuitively, the Ethereum network existing at all is ~5x more important than the ZK-proving space. There, Succinct gets ~1/3 credit. Consensus clients are half of the ethereum network, and Prysm is ~22% of that, so 5 * 0.5 * 0.22 = 0.55, whereas succinct is 0.33, so we get ~1.67"
+ethers-io/ethers.js,OffchainLabs/prysm,OffchainLabs/prysm,1.7,"Intuitively, the Ethereum network is ~5x more important than the ability to access it with javascript. Consensus clients are responsible for half of that, and Prysm is 22% of consensus client market share. Meanwhile, ethers.js gets 1/3 of the credit for javascript usability. 5 * 0.5 * 0.22 = 0.55, compare to 0.333 for ethers.js, hence 1.7x"
+sigp/lighthouse,hyperledger/besu,sigp/lighthouse,1.5,"By raw market share, 48/16=3, but besu is minority so it contributes more to market share"
+l2beat/l2beat,OpenZeppelin/openzeppelin-contracts,OpenZeppelin/openzeppelin-contracts,2,"Openzeppelin source code is widely used in production by many dAppps.
+
+L2Beat advisory/research is valuable, but they don't directly influence safety of user funds to the extend OZepppelin source code does."
+Consensys/teku,argotorg/solidity,argotorg/solidity,5,"There are multiple consensus clients, but there is only one ""mainstream"" Solidity stack. "
+ethereum/EIPs,vyperlang/vyper,vyperlang/vyper,8,Vyper - python-like language is more important than administrative work which goes into publishing EIPs.
+argotorg/hevm,vyperlang/vyper,vyperlang/vyper,7,
+argotorg/solidity,ethereum/consensus-specs,ethereum/consensus-specs,9,
+Consensys/teku,argotorg/hevm,Consensys/teku,5,5
+ethereum-lists/chains,argotorg/solidity,argotorg/solidity,10,
+vyperlang/vyper,Consensys/teku,vyperlang/vyper,8,
+l2beat/l2beat,argotorg/solidity,argotorg/solidity,5,
+NomicFoundation/hardhat,ethereum/consensus-specs,ethereum/consensus-specs,7,
+remix-project-org/remix-project,scaffold-eth/scaffold-eth-2,remix-project-org/remix-project,10,
+OpenZeppelin/openzeppelin-contracts,ethereum/go-ethereum,ethereum/go-ethereum,4,
+blockscout/blockscout,safe-global/safe-smart-account,blockscout/blockscout,2,Decentralized open block explorers are critical. Safe is great infrastructure but less important.
+ethers-io/ethers.js,remix-project-org/remix-project,ethers-io/ethers.js,2,
+argotorg/sourcify,ethereum-lists/chains,argotorg/sourcify,2,
+argotorg/sourcify,safe-global/safe-smart-account,safe-global/safe-smart-account,2,
+blockscout/blockscout,ethers-io/ethers.js,ethers-io/ethers.js,2,
+scaffold-eth/scaffold-eth-2,ethereum-lists/chains,ethereum-lists/chains,2,
+ethers-io/ethers.js,ethereum-lists/chains,ethers-io/ethers.js,4,
+OpenZeppelin/openzeppelin-contracts,argotorg/sourcify,OpenZeppelin/openzeppelin-contracts,2,
+argotorg/solidity,NomicFoundation/hardhat,argotorg/solidity,2,"The actual language, vs the testing infrastructure"
+ethstaker/eth-docker,ethereum/consensus-specs,ethereum/consensus-specs,2,
+ethereum/consensus-specs,Consensys/teku,ethereum/consensus-specs,5,
+ethereum/consensus-specs,Consensys/teku,ethereum/consensus-specs,5,a single source of truth for ethereum consensus vs an implementation
+ethereum/consensus-specs,OpenZeppelin/openzeppelin-contracts,OpenZeppelin/openzeppelin-contracts,1.1,both are critical at different layers
+ethereum/EIPs,succinctlabs/sp1,ethereum/EIPs,5,"EIP has broader range of impact. SP1 is very early stage plus there are multiple teams doing similar goals, although SP1 seems to be one of the leaders"
+OpenZeppelin/openzeppelin-contracts,ChainSafe/lodestar,OpenZeppelin/openzeppelin-contracts,10,"openzeppeling contracts speed up the learning curve for dapp developers and also help keep dapps more secure, lodestar is one of many consensus clients"
+ChainSafe/lodestar,Consensys/teku,ChainSafe/lodestar,1.1,"lodestar is a smaller team hence helping more with decentralization, I appreciate teku’s work too though"
+succinctlabs/sp1,NomicFoundation/hardhat,NomicFoundation/hardhat,10,"hardhat enables smart contract development, sp1 is still early stage prototyping and R&D"
+ethstaker/eth-docker,ethereum/EIPs,ethstaker/eth-docker,2,"EIPs have broader range of impact but its value comes from the contributors to individual EIPs than the project itself, if comparing specifically the EIPs as a project then eth-docker gives much more added value"
+ethpandaops/checkpointz,ethstaker/eth-docker,ethstaker/eth-docker,1.5,"checkpointz while really valueable for client setup, eth-docker’s impact is more wide"
+ChainSafe/lodestar,ethstaker/eth-docker,ethstaker/eth-docker,2,a user tool vs one of multiple clients
+swiss-knife-xyz/swiss-knife,flashbots/rbuilder,flashbots/rbuilder,7,"Whereas Swiss Knife is an ease of access point many self-learning developers, or at times, for the prolific ones who need simple user interfaces in case-specific environments, Flashbot's rbuilder is a hub-and-spoke approach aiming for Rust aficionados as well, given that many Rust people are usually nerdsnipe by Solana, to simplify it even in the case of losing the nuance. That is, I'd support Swiss Knife but any dev in the age of even primitive LLMs can easily build those tools for themselves."
+flashbots/mev-boost,swiss-knife-xyz/swiss-knife,flashbots/mev-boost,50,"This is an easy one. Given my previous evalution of Swiss Knife, which is in fact a multitool I like, mev-boost is a power house node that closes the gap between the better aspects of traditional finance and that of decentralized financial markets."
+swiss-knife-xyz/swiss-knife,ethereum/go-ethereum,ethereum/go-ethereum,100,I don't think this needs a comparison eval here.
+remix-project-org/remix-project,dappnode/DAppNode,dappnode/DAppNode,1.5,
+flashbots/mev-boost,ethereum/EIPs,ethereum/EIPs,10,
+foundry-rs/foundry,scaffold-eth/scaffold-eth-2,foundry-rs/foundry,5,
+ethstaker/eth-docker,flashbots/mev-boost,flashbots/mev-boost,10,
+scaffold-eth/scaffold-eth-2,flashbots/mev-boost,flashbots/mev-boost,10,
+dappnode/DAppNode,foundry-rs/foundry,foundry-rs/foundry,5,
+blockscout/blockscout,foundry-rs/foundry,foundry-rs/foundry,5,
+Cyfrin/aderyn,remix-project-org/remix-project,Cyfrin/aderyn,5,
+remix-project-org/remix-project,blockscout/blockscout,remix-project-org/remix-project,2,
+ethstaker/eth-docker,dappnode/DAppNode,ethstaker/eth-docker,2,
+sigp/lighthouse,flashbots/mev-boost,sigp/lighthouse,5,
+sigp/lighthouse,flashbots/mev-boost,sigp/lighthouse,5,
+scaffold-eth/scaffold-eth-2,supranational/blst,supranational/blst,8,
+sigp/lighthouse,flashbots/mev-boost,sigp/lighthouse,6,
+supranational/blst,sigp/lighthouse,sigp/lighthouse,2,
+foundry-rs/foundry,argotorg/solidity,argotorg/solidity,8,
+argotorg/solidity,ethereum/go-ethereum,ethereum/go-ethereum,1.5,
+eth-infinitism/account-abstraction,paradigmxyz/reth,eth-infinitism/account-abstraction,1.2,"AA is less complex than an execution client, however it has more impact as it was an original idea"
+argotorg/hevm,ethereum/go-ethereum,ethereum/go-ethereum,10,
+ChainSafe/lodestar,paradigmxyz/reth,paradigmxyz/reth,1.2,
+erigontech/erigon,paradigmxyz/reth,erigontech/erigon,2.7,"Erigon was built without major VC funding, and was much more performant than Reth"
+ethereum/EIPs,paradigmxyz/reth,ethereum/EIPs,10,EIPs is where its all happening
+ChainSafe/lodestar,succinctlabs/op-succinct,ChainSafe/lodestar,2,"Succinct hasnt fully opensourced their multi-gpu prover network, i dont see why they should get rewarded"
+erigontech/erigon,DefiLlama/DefiLlama-Adapters,DefiLlama/DefiLlama-Adapters,10,The work that DefiLlama has done on maintaining and expanding coverage of thousands of adapters for defi protocols is nothing short of astonishing and should not be underestimated
+argotorg/hevm,DefiLlama/DefiLlama-Adapters,DefiLlama/DefiLlama-Adapters,2,"Theres many testing frameworks, but only one defillama"
+ethereum/go-ethereum,paradigmxyz/reth,ethereum/go-ethereum,5,Geth is the OG
+eth-infinitism/account-abstraction,ethereum/go-ethereum,ethereum/go-ethereum,10,
+argotorg/solidity,lambdaclass/ethrex,argotorg/solidity,50,
+ethereum/go-ethereum,OffchainLabs/prysm,ethereum/go-ethereum,2,
+succinctlabs/op-succinct,argotorg/solidity,argotorg/solidity,10,
+OffchainLabs/prysm,ethereum/EIPs,ethereum/EIPs,2,
+flashbots/mev-boost,paradigmxyz/reth,flashbots/mev-boost,5,
+succinctlabs/op-succinct,flashbots/mev-boost,flashbots/mev-boost,3,
+ethereum/EIPs,succinctlabs/op-succinct,ethereum/EIPs,10,
+succinctlabs/op-succinct,ethereum/go-ethereum,ethereum/go-ethereum,30,
+flashbots/mev-boost,lambdaclass/ethrex,flashbots/mev-boost,30,
+flashbots/mev-boost,ethereum/go-ethereum,ethereum/go-ethereum,4,
+hyperledger/besu,ethereum/go-ethereum,ethereum/go-ethereum,2.5,"Hyperledger Besu and Go Ethereum (Geth) are both popular Execution Clients that run the Ethereum blockchain, but they differ significantly in their implementation, features, and target audience"
+sigp/lighthouse,argotorg/act,sigp/lighthouse,20,"Here is a summary of the comparison:
+
+Lighthouse is a core consensus client that is foundational and indispensable to Ethereum's live functioning. It directly secures the chain, processes blocks, supports validators, and is crucial for network uptime, security, and client diversity. It has massive adoption, a large community, and a proven track record.
+
+Act is a niche formal verification tool that improves smart contract correctness and security at the developer/abstract layer. While it has meaningful potential to prevent bugs, its current adoption is minimal, confined to specialized researchers and auditors, and it is not critical to the network's production infrastructure.
+
+The conclusion is that Lighthouse's contribution dwarfs Act's in terms of immediate and critical impact, as Lighthouse carries the operational load of consensus security. The comparison assigns a 20.0x multiplier to Lighthouse to reflect this large gap between a critical piece of live infrastructure and a valuable but specialized developer tool."
+Cyfrin/aderyn,ethereum/go-ethereum,ethereum/go-ethereum,1.1,
+hyperledger/besu,argotorg/act,hyperledger/besu,1.9,
+ethpandaops/checkpointz,argotorg/solidity,argotorg/solidity,13.2,Solidity = Ethereum
+argotorg/act,ethereum/py_ecc,argotorg/act,1.1,
+ethereum/go-ethereum,argotorg/solidity,ethereum/go-ethereum,1.1,"A tough comparison since both are the backbone of the ethereum ecosystem. This reflects that while Geth's foundational role slightly tips the balance, both repositories are nearly equally essential to the overall operation, security, and utility of the Ethereum ecosystem."
+ethpandaops/checkpointz,hyperledger/besu,hyperledger/besu,1.1,
+sigp/lighthouse,ethereum/py_ecc,sigp/lighthouse,1.1,
+ethereum/py_ecc,hyperledger/besu,hyperledger/besu,1.1,
+OpenZeppelin/openzeppelin-contracts,argotorg/solidity,argotorg/solidity,1.2,
+sigp/lighthouse,argotorg/solidity,argotorg/solidity,1.3,
+DefiLlama/DefiLlama-Adapters,TrueBlocks/trueblocks-core,DefiLlama/DefiLlama-Adapters,1.3,"I largely agree with the AI suggestion.  Adapters has more adoption, but the Trueblocks data querying application is very robust and fast after you get past the tough setup and scant documentation."
+DefiLlama/chainlist,ethereum-lists/chains,ethereum-lists/chains,1.3,
+ethereum-lists/chains,OpenZeppelin/openzeppelin-contracts,OpenZeppelin/openzeppelin-contracts,5,OZ's standardized contracts are great for beginners to get involved in deployment without worrying so much about the security of the contract.  This drastically lowers the barrier to entry.
+ethereum-lists/chains,OpenZeppelin/openzeppelin-contracts,OpenZeppelin/openzeppelin-contracts,5,OZ's standardized contracts are great for beginners to get involved in deployment without worrying so much about the security of the contract.  This drastically lowers the barrier to entry.
+argotorg/solidity,DefiLlama/DefiLlama-Adapters,argotorg/solidity,5,
+DefiLlama/DefiLlama-Adapters,scaffold-eth/scaffold-eth-2,scaffold-eth/scaffold-eth-2,2,
+sigp/lighthouse,DefiLlama/chainlist,sigp/lighthouse,4,
+deepfunding/dependency-graph,safe-global/safe-smart-account,safe-global/safe-smart-account,10,"As much as I love the deep funding initiative, the safe contract repo powers Safes on eth and those are used by all the reputable projects and hold millions of dollars."
+OpenZeppelin/openzeppelin-contracts,deepfunding/dependency-graph,OpenZeppelin/openzeppelin-contracts,7,
+ethereum/EIPs,argotorg/solidity,ethereum/EIPs,6,Eips define how eth itself evolves while solidity is a language built on top of those rules so eips have higher impact.
+ethereum/go-ethereum,ChainSafe/lodestar,ethereum/go-ethereum,5,Geth is widely used execution client. Lodestar is newer
+ethereum/go-ethereum,argotorg/fe,ethereum/go-ethereum,8,Geth is core repo. Fe is a new experimental language with very low adoption
+wevm/viem,ethers-io/ethers.js,wevm/viem,2,viem is modern. ether.js is widely used but lack innovation
+ethstaker/eth-docker,ethpandaops/checkpointz,ethstaker/eth-docker,4,Eth docker is widely used tool for node running
+ethpandaops/checkpointz,ChainSafe/lodestar,ChainSafe/lodestar,6,Lodestar is a consensus client which seems very useful than checkpointz
+DefiLlama/chainlist,argotorg/fe,DefiLlama/chainlist,5,Chainlist is widely used by developers and fe is just an early language
+DefiLlama/chainlist,ethpandaops/checkpointz,DefiLlama/chainlist,3,Chainlist is very popular and useful than checkpointz
+argotorg/fe,argotorg/solidity,argotorg/solidity,7,Solidity is used by most of the devs and Fe is new language with with lmited adoption
+ethereum/go-ethereum,argotorg/solidity,ethereum/go-ethereum,4,Geth is the core infra in eth ecosystem
+flashbots/rbuilder,LFDT-web3j/web3j,flashbots/rbuilder,3,"No hate to the java folks but decentralization is why they wanted to build here first. 
+Without the work of flashbot, we would not have good distributed block builder designs.
+
+Also i d would be confident to state that the web3js will receive more contributions and indirect funding through private companies building their products there and financing full tim developpers."
+l2beat/l2beat,ethereum/EIPs,ethereum/EIPs,5,"Hard to compare. 
+EIP devs are just so important.
+
+Would also need more numbers regarding the current good/bad funding of EIPs - how many abandonned projects etc..
+"
+NethermindEth/nethermind,flashbots/rbuilder,NethermindEth/nethermind,3,client devs need more secure funding sources than the mev folks i d say
+risc0/risc0-ethereum,l2beat/l2beat,risc0/risc0-ethereum,2,It needs more consequent funding 
+flashbots/mev-boost,remix-project-org/remix-project,flashbots/mev-boost,2,decentralization > dev tooling
+LFDT-web3j/web3j,NethermindEth/nethermind,NethermindEth/nethermind,3,needs more funding 
+remix-project-org/remix-project,l2beat/l2beat,l2beat/l2beat,5,remix does not need a lot of funding right? 
+flashbots/mev-boost,flashbots/rbuilder,flashbots/rbuilder,3,Innovation will cost more than  mature tech
+flashbots/mev-boost,NethermindEth/nethermind,NethermindEth/nethermind,4,
+flashbots/rbuilder,risc0/risc0-ethereum,risc0/risc0-ethereum,1.1,"it needs more funding but i really don t know between these two.
+discard"
+Nethereum/Nethereum,ethereum/execution-apis,ethereum/execution-apis,5,Because C# Client for ethereum is not in useful because there are better alternatives in other languages. But execution-apis  has no alternative and is a foundational piece of work that form the base for other valueable projects.
+ethereum/execution-apis,argotorg/solidity,argotorg/solidity,3,"Solidity is the back bone of DeFi which bring most of the transactions and TVL to ethereum. Hence on pure monetary value, solidity gives more to ethereum"
+ethereum/execution-apis,libp2p/libp2p,ethereum/execution-apis,1.5,Libp2p gives value on the network layer immensely but execution-apis is specificaly to give value to ethereum. So on that basis it is nearly equal value but not equal (i.e at 1.5x).
+NomicFoundation/hardhat,argotorg/solidity,argotorg/solidity,5,"There is no hardhat without solidity, not the other way around. Plus there is alot of hardhat alternatives but little solidity alternative."
+Nethereum/Nethereum,argotorg/solidity,argotorg/solidity,5,Nethereum is replacable but solidity has a brand value and alot of TVL protocol rely on it.
+dappnode/DAppNode,NomicFoundation/hardhat,NomicFoundation/hardhat,5,Dappnode is a data platform but hardhat gives a dev enviroment which creates more value in ethereum just based off popular companies who are already using hardhat as their go to solidity dev environment.
+blockscout/blockscout,Nethereum/Nethereum,Nethereum/Nethereum,1,I believe both to some extent are targeting a niche. Nethereum that of C# enterprise focused devs and blockscout is catering to those looking for etherscan alternative. 
+Nethereum/Nethereum,hyperledger/besu,hyperledger/besu,2,Just based on the industry adoption. Besu leads far more than Nethereum
+ipsilon/evmone,argotorg/solidity,argotorg/solidity,7,Solidity adoption and value captured out paces significantly to that of evmone.
+blockscout/blockscout,libp2p/libp2p,libp2p/libp2p,2,Libp2p is still powering important ethereum protocols and its low replaceability factor gives it higher points. 
+ethers-io/ethers.js,wevm/viem,wevm/viem,5,Amazing DX. Probably the project that makes Ethereum easily accessible. Ethereum DX would have been at least 5 times worse without it. Works seamlessly on both the web and mobile (React Native).
+ethereum/EIPs,ethers-io/ethers.js,ethereum/EIPs,1.1,A database with all of Ethereum's capabilities is very valuable.
+ethers-io/ethers.js,ethereum/go-ethereum,ethereum/go-ethereum,2,"Without clients ""running"" the network, projects like ethers or viem do not matter."
+ethereum-lists/chains,ethereum/EIPs,ethereum/EIPs,10,
+protofire/solhint,ethereum/go-ethereum,ethereum/go-ethereum,11,
+ethereum/go-ethereum,ethereum/EIPs,ethereum/go-ethereum,2,"Both are very valuable, but I pick Geth because clients are fundamental to Ethereum"
+DefiLlama/chainlist,ethereum-lists/chains,DefiLlama/chainlist,5,Chainlist is my go-to place. I deeply appreciate their RPC privacy categorisation.
+ethereum/EIPs,OpenZeppelin/openzeppelin-contracts,OpenZeppelin/openzeppelin-contracts,1.5,"Both are very valuable, but Open Zeppelin contracts make Solidity's DX much better."
+ethers-io/ethers.js,DefiLlama/chainlist,ethers-io/ethers.js,7,EtherJS is crucial for interacting with the chain.
+ethereum/EIPs,DefiLlama/chainlist,ethereum/EIPs,8,
+flashbots/rbuilder,flashbots/mev-boost-relay,flashbots/rbuilder,1.1,
+flashbots/rbuilder,ethereum/go-ethereum,ethereum/go-ethereum,1.1,
+flashbots/mev-boost,sigp/lighthouse,sigp/lighthouse,1.1,consensus client > block building market midware 
+flashbots/mev-boost-relay,libp2p/libp2p,libp2p/libp2p,2,framework beats it all
+ethereum/go-ethereum,libp2p/libp2p,libp2p/libp2p,2,
+aestus-relay/mev-boost-relay,a16z/helios,a16z/helios,2,
+flashbots/mev-boost-relay,flashbots/mev-boost,flashbots/mev-boost,1.1,
+ethereum/go-ethereum,flashbots/mev-boost-relay,ethereum/go-ethereum,5,
+foundry-rs/foundry,ethereum/go-ethereum,foundry-rs/foundry,1.2,Geth has been around awhile and was the client of choice for many years but it's impact has faded. Foundry is very good developer tooling.
+ethereum/go-ethereum,ethereum/EIPs,ethereum/EIPs,1.1,Past importance would go to Geth but the EIP structure is critical and evergreen.
+ethereum/EIPs,swiss-knife-xyz/swiss-knife,ethereum/EIPs,30,Swiss knife is a handy set of tools but could never be compared to the EIP process.
+ethereum/go-ethereum,OpenZeppelin/openzeppelin-contracts,OpenZeppelin/openzeppelin-contracts,5,The ability for developers to pull audited contracts off the shelf is too great to measure. Geth has waned in it's signifigance to the ecosystem.
+flashbots/rbuilder,flashbots/mev-boost,flashbots/mev-boost,3,I agree with the AI on this one. mev boost is more significant of a contribution.
+swiss-knife-xyz/swiss-knife,ethereum/go-ethereum,ethereum/go-ethereum,25,
+flashbots/rbuilder,NomicFoundation/hardhat,NomicFoundation/hardhat,8,
+ethereum/consensus-specs,flashbots/mev-boost,ethereum/consensus-specs,2,
+NomicFoundation/hardhat,flashbots/mev-boost,NomicFoundation/hardhat,4,
+flashbots/mev-boost,OpenZeppelin/openzeppelin-contracts,OpenZeppelin/openzeppelin-contracts,4,
+ethereum/go-ethereum,deepfunding/dependency-graph,ethereum/go-ethereum,75,go ethereum is one of the first implementations and probably most used execution client of Ethereum protocol
+paradigmxyz/reth,succinctlabs/rsp,paradigmxyz/reth,40,reth is much more valuable as it is Ethereum execution client implementation and its codebase/SDK used throughout the ecosystem
+paradigmxyz/reth,edb-rs/edb,paradigmxyz/reth,10,"edb is very useful project, but not as much used by others and important as reth"
+ethereum/go-ethereum,lambdaclass/lambdaworks,ethereum/go-ethereum,20,"at the moment go ethereum much more important as it execution client, but lambdaworks could be important due to cryptographic primitives in the future as etheruem transitions to zkvms"
+lambdaclass/ethrex,ethereum/go-ethereum,ethereum/go-ethereum,5,"go etheruem more valuable due to being present for several years and used a lot on mainnet, but ethrex also very valuable as it is new execution client and good for client diversity and show new execution clietns can be created from scratch"
+ethereum/go-ethereum,sigp/lighthouse,ethereum/go-ethereum,1,"I would say the are equally valuable for the Ethereum, one of most used execution and consensus clients"
+edb-rs/edb,sigp/lighthouse,sigp/lighthouse,20,lighthouse more valuable due to being consensus client
+succinctlabs/rsp,ethereum/execution-apis,ethereum/execution-apis,30,execution apis define the APIs that are much needed for Ethereum protocol and very valuable for all execution clients
+ethereum/execution-apis,deepfunding/dependency-graph,ethereum/execution-apis,15,execution apis repo very valuable due to defining exection APIs for all execution clients and Ethereum protocol
+ethereum/consensus-specs,succinctlabs/rsp,ethereum/consensus-specs,20,"consensus specs repo much more valuable due to defining the core aspect of Ethereum protocol for all consensus clients, probably one of the most valuable repos"

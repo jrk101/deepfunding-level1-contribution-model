@@ -1,0 +1,15 @@
+repo,client_market_share_pct,client_type,source,node_count
+sigp/lighthouse,50.81,consensus,ethernodes.org,4395
+offchainlabs/prysm,20.84,consensus,ethernodes.org,1803
+status-im/nimbus-eth2,10.30,consensus,ethernodes.org,891
+consensys/teku,10.24,consensus,ethernodes.org,886
+chainsafe/lodestar,2.45,consensus,ethernodes.org,212
+grandinetech/grandine,0.54,consensus,ethernodes.org,47
+lambdaclass/lambda_ethereum_consensus,0.10,consensus,ethernodes.org,0
+ethereum/go-ethereum,45.43,execution,ethernodes.org,4181
+nethermindeth/nethermind,19.00,execution,ethernodes.org,1749
+paradigmxyz/reth,11.49,execution,ethernodes.org,1057
+hyperledger/besu,9.16,execution,ethernodes.org,843
+erigontech/erigon,4.98,execution,ethernodes.org,458
+lambdaclass/ethrex,0.38,execution,ethernodes.org,35
+erigontech/silkworm,0.05,execution,ethernodes.org,0

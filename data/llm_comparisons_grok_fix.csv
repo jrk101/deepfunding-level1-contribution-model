@@ -1,0 +1,15 @@
+﻿repo_a,repo_b,winner,multiplier,source
+Cyfrin/aderyn,OpenZeppelin/openzeppelin-contracts,OpenZeppelin/openzeppelin-contracts,5,grok_fix
+Cyfrin/aderyn,NomicFoundation/hardhat,NomicFoundation/hardhat,3,grok_fix
+Cyfrin/aderyn,foundry-rs/foundry,foundry-rs/foundry,3,grok_fix
+Cyfrin/aderyn,ethers-io/ethers.js,ethers-io/ethers.js,3,grok_fix
+risc0/risc0-ethereum,NomicFoundation/hardhat,NomicFoundation/hardhat,5,grok_fix
+risc0/risc0-ethereum,foundry-rs/foundry,foundry-rs/foundry,5,grok_fix
+risc0/risc0-ethereum,OpenZeppelin/openzeppelin-contracts,OpenZeppelin/openzeppelin-contracts,10,grok_fix
+supranational/blst,Consensys/teku,supranational/blst,3,grok_fix
+supranational/blst,sigp/lighthouse,supranational/blst,3,grok_fix
+arkworks-rs/algebra,OpenZeppelin/openzeppelin-contracts,OpenZeppelin/openzeppelin-contracts,20,grok_fix
+arkworks-rs/algebra,NomicFoundation/hardhat,NomicFoundation/hardhat,5,grok_fix
+ethereum/py_ecc,supranational/blst,supranational/blst,10,grok_fix
+taikoxyz/taiko-mono,NomicFoundation/hardhat,NomicFoundation/hardhat,5,grok_fix
+herumi/mcl,supranational/blst,supranational/blst,2,grok_fix
