@@ -11,7 +11,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import LeaveOneOut, cross_val_predict
 
 # ── PATHS ─────────────────────────────────────────────────────────
-BASE = Path(r"C:\Users\josep\Desktop\DeepFunding_lvl_1")
+BASE = Path(r"C:\DeepFunding_lvl_1")
 
 PAIRWISE_CSV = BASE / "pairwise_data.csv"
 TRAIN_CSV    = BASE / "train.csv"        # FIX 1: previous round juror data
