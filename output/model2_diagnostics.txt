@@ -1,0 +1,142 @@
+Merged human BT repos: 71
+  Current-round pairs: 156
+  Train pairs (weight=0.2): 627
+LLM calibration: slope=0.475, intercept=0.234, R=0.785
+Ridge OBS_THRESHOLD: 4
+Ridge training repos: 57
+Ridge best alpha: 8.8951
+LOO CV MAE: 0.3087  Pearson R: 0.810
+
+Feature importances:
+  llm_bt_calibrated               +0.3115
+  stackoverflow                   +0.1755
+  client_market_share             +0.1298
+  log_pypi                        -0.0897
+  log_forks                       +0.0878
+  has_package                     -0.0630
+  log_stars                       +0.0498
+  rev_dep_count                   -0.0478
+  log_npm                         +0.0476
+  log_commits12m                  -0.0469
+  log_cargo                       -0.0312
+  log_days_stale                  -0.0238
+  log_rev_dep                     -0.0218
+  log_network_dependents          -0.0195
+  log_contributors                +0.0180
+  log_releases                    -0.0179
+  closed_issues_ratio             +0.0159
+  commit_frequency                +0.0066
+  pagerank                        +0.0040
+
+Sparse repos excluded from Ridge (obs < 4):
+  supranational/blst                                       obs=2  conf_theta=+0.183
+  cyfrin/aderyn                                            obs=1  conf_theta=+0.159
+  risc0/risc0-ethereum                                     obs=1  conf_theta=+0.128
+  flashbots/mev-boost-relay                                obs=3  conf_theta=-0.011
+  flashbots/mev-boost-relay                                obs=3  conf_theta=-0.011
+  trueblocks/trueblocks-core                               obs=1  conf_theta=-0.027
+  protofire/solhint                                        obs=1  conf_theta=-0.037
+  lambdaclass/lambdaworks                                  obs=1  conf_theta=-0.091
+  ethstaker/ethstaker-deposit-cli                          obs=1  conf_theta=-0.119
+  edb-rs/edb                                               obs=2  conf_theta=-0.279
+  lambdaclass/ethrex                                       obs=3  conf_theta=-0.446
+  succinctlabs/rsp                                         obs=3  conf_theta=-0.511
+
+Full ranking (ensemble):
+  #  1  ethereum/go-ethereum                                     5.200%  76obs  human
+  #  2  argotorg/solidity                                        3.957%  51obs  human
+  #  3  sigp/lighthouse                                          3.735%  54obs  human
+  #  4  ethereum/eips                                            3.238%  25obs  human
+  #  5  openzeppelin/openzeppelin-contracts                      2.753%  46obs  human
+  #  6  nethermindeth/nethermind                                 2.631%  39obs  human
+  #  7  prysmaticlabs/prysm                                      2.541%  52obs  human
+  #  8  nomicfoundation/hardhat                                  2.517%  34obs  human
+  #  9  ethereum/consensus-specs                                 2.464%  13obs  human
+  # 10  foundry-rs/foundry                                       2.378%  33obs  human
+  # 11  ethereum/execution-apis                                  1.851%  20obs  human
+  # 12  ethers-io/ethers.js                                      1.819%  40obs  human
+  # 13  hyperledger/besu                                         1.639%  41obs  human
+  # 14  consensys/teku                                           1.536%  43obs  human
+  # 15  status-im/nimbus-eth2                                    1.356%  39obs  human
+  # 16  wevm/viem                                                1.290%  32obs  human
+  # 17  flashbots/mev-boost                                      1.224%  18obs  human
+  # 18  chainsafe/lodestar                                       1.207%  39obs  human
+  # 19  ethereum/web3.py                                         1.189%  35obs  human
+  # 20  safe-global/safe-smart-account                           1.177%  37obs  human
+  # 21  erigontech/erigon                                        1.161%  55obs  human
+  # 22  eth-infinitism/account-abstraction                       1.123%  43obs  human
+  # 23  paradigmxyz/reth                                         1.109%  55obs  human
+  # 24  libp2p/libp2p                                            1.080%  4obs  human
+  # 25  arkworks-rs/algebra                                      1.076%  0obs  blind
+  # 26  vyperlang/vyper                                          1.075%  42obs  human
+  # 27  ethpandaops/ethereum-package                             1.009%  11obs  human
+  # 28  remix-project-org/remix-project                          1.002%  50obs  human
+  # 29  risc0/risc0-ethereum                                     1.001%  1obs  sparse
+  # 30  ethstaker/eth-docker                                     0.986%  7obs  human
+  # 31  l2beat/l2beat                                            0.961%  5obs  human
+  # 32  succinctlabs/sp1                                         0.952%  5obs  human
+  # 33  taikoxyz/taiko-mono                                      0.925%  0obs  blind
+  # 34  blockscout/blockscout                                    0.921%  6obs  human
+  # 35  defillama/defillama-adapters                             0.896%  5obs  human
+  # 36  defillama/chainlist                                      0.887%  7obs  human
+  # 37  supranational/blst                                       0.884%  2obs  sparse
+  # 38  flashbots/rbuilder                                       0.834%  6obs  human
+  # 39  dappnode/dappnode                                        0.817%  4obs  human
+  # 40  herumi/mcl                                               0.807%  0obs  blind
+  # 41  nethereum/nethereum                                      0.795%  25obs  human
+  # 42  consensys/gnark-crypto                                   0.792%  0obs  blind
+  # 43  cyfrin/aderyn                                            0.789%  1obs  sparse
+  # 44  ethereum/js-ethereum-cryptography                        0.772%  0obs  blind
+  # 45  a16z/helios                                              0.763%  28obs  human
+  # 46  trueblocks/trueblocks-core                               0.737%  1obs  sparse
+  # 47  erigontech/silkworm                                      0.737%  14obs  human
+  # 48  protofire/solhint                                        0.734%  1obs  sparse
+  # 49  vectorized/solady                                        0.733%  0obs  blind
+  # 50  espressosystems/jellyfish                                0.724%  0obs  blind
+  # 51  wighawag/hardhat-deploy                                  0.724%  0obs  blind
+  # 52  0xmiden/miden-vm                                         0.717%  0obs  blind
+  # 53  smartcontracts/simple-optimism-node                      0.708%  0obs  blind
+  # 54  paulmillr/noble-curves                                   0.695%  0obs  blind
+  # 55  nethermindeth/juno                                       0.694%  0obs  blind
+  # 56  ethereum/evmone                                          0.679%  11obs  human
+  # 57  succinctlabs/op-succinct                                 0.679%  5obs  human
+  # 58  otterscan/otterscan                                      0.677%  0obs  blind
+  # 59  powdr-labs/powdr                                         0.675%  0obs  blind
+  # 60  intellij-solidity/intellij-solidity                      0.668%  0obs  blind
+  # 61  commit-boost/commit-boost-client                         0.648%  0obs  blind
+  # 62  holiman/goevmlab                                         0.645%  0obs  blind
+  # 63  wealdtech/ethdo                                          0.642%  0obs  blind
+  # 64  lfdt-web3j/web3j                                         0.642%  30obs  human
+  # 65  argotorg/hevm                                            0.640%  7obs  human
+  # 66  lambdaclass/ethrex                                       0.628%  3obs  sparse
+  # 67  skalenetwork/libbls                                      0.624%  0obs  blind
+  # 68  lambdaclass/lambda_ethereum_consensus                    0.624%  5obs  human
+  # 69  shazow/whatsabi                                          0.623%  0obs  blind
+  # 70  a16z/halmos                                              0.622%  0obs  blind
+  # 71  ethpandaops/checkpointz                                  0.619%  11obs  human
+  # 72  chainsafe/bls                                            0.617%  0obs  blind
+  # 73  flashbots/mev-boost-relay                                0.610%  3obs  sparse
+  # 74  argotorg/sourcify                                        0.610%  33obs  human
+  # 75  ethstaker/ethstaker-deposit-cli                          0.609%  1obs  sparse
+  # 76  edb-rs/edb                                               0.598%  2obs  sparse
+  # 77  succinctlabs/rsp                                         0.593%  3obs  sparse
+  # 78  certora/certoraprover                                    0.589%  0obs  blind
+  # 79  argotorg/act                                             0.577%  8obs  human
+  # 80  plonky3/plonky3                                          0.569%  0obs  blind
+  # 81  lambdaclass/lambdaworks                                  0.565%  1obs  sparse
+  # 82  evmts/tevm-monorepo                                      0.563%  0obs  blind
+  # 83  ethereum-lists/chains                                    0.545%  43obs  human
+  # 84  dl-solarity/solidity-lib                                 0.539%  0obs  blind
+  # 85  ethpandaops/ethereum-helm-charts                         0.527%  7obs  human
+  # 86  deepfunding/dependency-graph                             0.510%  4obs  human
+  # 87  swiss-knife-xyz/swiss-knife                              0.509%  5obs  human
+  # 88  offchainlabs/stylus-sdk-rs                               0.503%  0obs  blind
+  # 89  ethdebug/format                                          0.489%  6obs  human
+  # 90  alloy-rs/alloy                                           0.477%  33obs  human
+  # 91  scaffold-eth/scaffold-eth-2                              0.476%  37obs  human
+  # 92  axiom-crypto/snark-verifier                              0.436%  0obs  blind
+  # 93  ethereum/py_ecc                                          0.408%  0obs  blind
+  # 94  argotorg/fe                                              0.396%  32obs  human
+  # 95  vyperlang/titanoboa                                      0.379%  20obs  human
+  # 96  apeworx/ape                                              0.336%  16obs  human
+  # 97  grandinetech/grandine                                    0.311%  35obs  human
