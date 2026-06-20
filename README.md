@@ -1,14 +1,12 @@
 # Deep Funding Level I: Scoring 98 Ethereum Repos with Human BT, LLM Calibration, and a Feature Prior
 
-**Status:** submitted. Final file: `submission_no_conf_ensemble.csv`. Leaderboard/jury score: **0.2576** (lower is better; close to my internal LOO CV MAE of 0.31, which suggests the model wasn't just overfitting my own validation split).
-
-> **The short version:** three signals, blended (human jury Bradley-Terry, LLM-calibrated Bradley-Terry, and a Ridge feature prior). The biggest bug I found along the way was a "double-shrinkage" problem that was quietly squeezing sparse-but-genuine repos toward zero; removing it is most of what separates the file I actually submitted from the one with the prettiest diagnostics. Internal LOO MAE: 0.309. Leaderboard score: 0.2576.
+> **The short version:** three signals, blended (human jury Bradley-Terry, LLM-calibrated Bradley-Terry, and a Ridge feature prior). The biggest bug I found along the way was a "double-shrinkage" problem that was quietly squeezing sparse-but-genuine repos toward zero; removing it is most of what separates the file I actually submitted from the one with the prettiest diagnostics.
 
 ## What this competition actually asks for
 
 Deep Funding Level I wants a single number per repository (a weight, all 98 of them summing to 1) that represents how much that repo contributes to Ethereum existing at all. The ground truth is a hidden jury that made pairwise statements like "repo A contributes 5x more than repo B," and the competition reconstructs importance from those comparisons using a robust Bradley-Terry model with a Huber loss (so a handful of wild outlier multipliers can't single-handedly wreck the fit).
 
-The honest version of the problem: you only get jury opinions on a small fraction of the 98×97 possible pairs, those opinions disagree with each other constantly, and you still have to produce a confident number for every repo, including the ones nobody on the jury ever compared.
+The honest version of the problem: you only get jury opinions on a small fraction, those opinions disagree with each other constantly, and you still have to produce a confident number for every repo, including the ones nobody on the jury ever compared.
 
 ## What I actually built
 
@@ -20,7 +18,7 @@ Three signals, blended:
 
 Sparse, lightly-compared repos lean on (2) and (3) more; well-covered repos lean on (1). The blending weight is a function of how many times each repo actually showed up in a comparison, not a fixed split.
 
-I'm not going to walk through line-by-line code here (nobody wants that, and the juror feedback from the last round was pretty clear that walls of code without narrative are the fastest way to lose a reader). Instead I'll explain the pipeline the way I actually debugged it: in the order the bugs showed up.
+I'll explain the pipeline the way I actually debugged it: in the order the bugs showed up.
 
 ## The data
 
@@ -37,9 +35,8 @@ I'm not going to walk through line-by-line code here (nobody wants that, and the
 | `seedReposWithNoTransitiveDependencies.json` | dependency edges, used to build reverse-dependency counts and a PageRank score over the 98-repo graph |
 | `repos_to_predict.csv` | the actual 98-repo target list |
 
-One note on `train.csv`: the organizers released the previous round's jury data specifically as public training material for this round, so using it isn't a leakage concern. It's a weak prior I'm explicitly down-weighting (20%) because it reflects a different round's jury on a related but not identical task.
+One note on `train.csv`: the organizers released the previous round's jury data specifically as public training material for this round, so using it is not a leakage concern. Since the previous round covered only 45 repositories while this contest evaluates 98 repositories, I use it as a weak prior (20% weight) rather than relying on it as ground truth.
 
-A couple of other data quirks worth flagging up front, because they shaped some of the fixes below: `pairwise_data.csv` has rows with `multiplier == 1.1` that are a known data-release bug and get dropped outright, and `repos_to_predict.csv` had a duplicate row for `flashbots/mev-boost-relay`. That's harmless once everything gets keyed by a normalized repo slug, but it did make one of my diagnostic printouts list that repo twice and cost me ten minutes wondering if I had a bug.
 
 ## Step 1: Human Bradley-Terry, and why a repo's "observation count" turned out to be the single most important number in this whole project
 
@@ -54,7 +51,7 @@ def huber_loss(theta, rows, delta=1.0):
     return loss
 ```
 
-minimized over all repo thetas at once, with the current round at full weight and last round's `train.csv` at 0.2. I also normalize repo URLs/slugs and resolve five cases of the same repo existing under two different GitHub handles (Prysm under both `offchainlabs/` and `prysmaticlabs/`, for instance) before any of this runs, otherwise the same repo silently splits its evidence across two identities.
+minimized over all repo thetas at once, with the current round at full weight and last round's `train.csv` at 0.2.
 
 This merged BT model covers 71 of the 98 target repos. The remaining 27 repos never appear in any human jury comparison and rely primarily on the calibrated LLM signal and the feature prior. I'll come back to that.
 
@@ -64,7 +61,7 @@ Early on, running BT on the current round's `pairwise_data.csv` alone, two repos
 
 ![Before/after: diagnosing the sparse-repo fixes](charts/before_after_vyper_fix.png)
 
-The top two panels show the actual diagnostic I ran: BT theta computed three ways, using current-round data only, last round's `train.csv` only, and the merged fit. Vyper goes from +2.37 (current-round-only) to **−0.53** (train-only) to +0.20 (merged). Viem goes from +1.93 to **−0.44** to +0.36. The previous round's jury, working off a much larger comparison set (627 rows vs. 156), flatly disagreed with this round's small sample. Merging the two rounds (even at a 5x discount on the older data) was enough on its own to pull both repos back down to a believable, mid-pack importance level. By the time the full pipeline runs, Vyper's merged observation count is 42 and Viem's is 32 (train.csv apparently mentions both repos a lot more than I'd guessed), and they land at ranks #26 and #16 respectively in the final ensemble: sensible positions for "real but secondary" infrastructure, not "ahead of go-ethereum."
+The top two panels show the actual diagnostic I ran: BT theta computed three ways, using current-round data only, last round's `train.csv` only, and the merged fit. Vyper goes from +2.37 (current-round-only) to **−0.53** (train-only) to +0.20 (merged). Viem goes from +1.93 to **−0.44** to +0.36. The previous round's jury, working off a much larger comparison set (627 rows vs. 156), flatly disagreed with this round's small sample. Merging the two rounds (even after treating the previous round's jury data as a weak signal (20% weight)) was enough on its own to pull both repos back down to a believable, mid-pack importance level. By the time the full pipeline runs, Vyper's merged observation count is 42 and Viem's is 32 (train.csv apparently mentions both repos a lot more than I'd guessed), and they land at ranks #26 and #16 respectively in the final ensemble.
 
 I want to be precise about what fixed this, because it wasn't a special case for Vyper or Viem. It was two general-purpose fixes that happened to fix this specific symptom: merging in the previous round's jury data, and adding confidence-aware shrinkage (below) so any repo with a tiny observation count gets pulled toward zero before it can dominate anything downstream.
 
@@ -81,7 +78,7 @@ It also created a new, less obvious problem, which I didn't catch until I specif
 
 ## Step 3: calibrating the LLM judgments onto the human scale
 
-The LLM comparisons get their own Huber BT fit, covering all 98 repos (LLMs will happily compare things humans never got around to). To put that on the same scale as the human thetas, I fit a Theil-Sen regression (robust to outliers, which matters because a few repos have wildly different human-vs-LLM opinions) using `confident_theta` as the human-side anchor (not raw theta, so sparse repos can't distort the calibration either):
+The LLM comparisons get their own Huber BT fit, covering all 98 repos. To put that on the same scale as the human thetas, I fit a Theil-Sen regression (robust to outliers, which matters because a few repos have wildly different human-vs-LLM opinions) using `confident_theta` as the human-side anchor (not raw theta, so sparse repos can't distort the calibration either):
 
 ```
 human_theta ≈ 0.475 × llm_theta + 0.234        (R = 0.785, n = 68 anchor repos)
@@ -89,15 +86,15 @@ human_theta ≈ 0.475 × llm_theta + 0.234        (R = 0.785, n = 68 anchor repo
 
 ![Human vs LLM calibration](charts/human_vs_llm_calibration.png)
 
-0.785 is a solid correlation for two completely independent judgment processes (different "judges," different evidence, no shared prompt or training signal between them), and it's the strongest single feature in the final Ridge model (more on that in Results). It's also clearly not 1.0: there's real, structured disagreement between what an LLM judges as important and what a human jury does, and that gap is informative rather than just noise (see the section on juror reasoning below for one source of that gap).
+0.785 is a solid correlation for two completely independent judgment processes and it's the strongest single feature in the final Ridge model (more on that in Results). It's also clearly not 1.0: there's real, structured disagreement between what an LLM judges as important and what a human jury does, and that gap is informative rather than just noise (see the section on juror reasoning below for one source of that gap).
 
 ### Filling in the chronically blind spots: the Grok supplement
 
-Three repos sat at the bottom of the human-coverage pile no matter what I did upstream: `cyfrin/aderyn` (1 human observation), `risc0/risc0-ethereum` (1), and `supranational/blst` (2). With that little human signal, their score was going to come almost entirely from the calibrated LLM theta and the feature prior, so I generated 9 additional targeted LLM comparisons for exactly these three repos and merged them into the LLM dataset, not the human dataset, and not given any special weight relative to the existing LLM rows. The goal was purely to thicken the LLM signal for repos the original LLM comparison set had barely touched either, not to put a thumb on the scale for three specific repos I'd decided I liked.
+Three repos sat at the bottom of the human-coverage pile no matter what I did upstream: `cyfrin/aderyn` (1 human observation), `risc0/risc0-ethereum` (1), and `supranational/blst` (2). With that little human signal, their score was going to come almost entirely from the calibrated LLM theta and the feature prior, so I generated 9 additional targeted LLM comparisons for exactly these three repos and merged them into the LLM dataset, not the human dataset, and not given any special weight relative to the existing LLM rows. The goal was purely to thicken the LLM signal for repos the original LLM comparison set had barely touched either.
 
 ![Cyfrin and Risc0 before/after the Grok supplement](charts/before_after_vyper_fix.png)
 
-(bottom two panels of the same chart) `cyfrin/aderyn`'s LLM BT theta moved from −0.294 to −0.146 (a real but modest improvement, still negative). `risc0/risc0-ethereum` actually moved slightly *down*, from +0.960 to +0.908. That second result surprised me: I expected more comparisons to reinforce an already-strong signal, not dilute it slightly, but it's a useful reminder that "add more data" doesn't always push a score in the direction you'd guess, and I'd rather report that honestly than pretend the supplement worked cleanly across the board.
+(bottom two panels of the same chart) `cyfrin/aderyn`'s LLM BT theta moved from −0.294 to −0.146 (a real but modest improvement, still negative). `risc0/risc0-ethereum` actually moved slightly *down*, from +0.960 to +0.908. While the effect was smaller than expected for RISC0, the new comparisons helped provide additional evidence for repos that previously had very limited coverage.
 
 ## Step 4: feature engineering and the Ridge prior
 
@@ -131,8 +128,6 @@ Here's the part of this project I'm most glad I caught before submitting. `confi
 ![Double-shrinkage effect on sparse repositories](charts/double_shrinkage_analysis.png)
 
 The clearest case is `cyfrin/aderyn`: raw BT theta is clearly positive (the jury, on the one comparison it appears in, rated it favorably), confidence-adjusted theta is still positive but small, and after λ-shrinkage on top of that the final theta crosses into **negative** territory: a repo the jury liked ends up being scored as below-average. `risc0/risc0-ethereum` follows the same pattern, just less dramatically. And `ethereum/consensus-specs` (which is not a sparse repo by any reasonable definition, 13 observations, comfortably above the Ridge training threshold) still gets meaningfully compressed by the same double discount, because 13 observations isn't large enough to make either shrinkage factor approach 1.
-
-This is the kind of bug that's invisible if you only look at top-10 rankings (none of these three repos were ever going to be #1) and only shows up if you specifically go looking for "is anything with real positive signal getting flipped negative." I found it by building exactly that diagnostic: sorting every repo with ≤3 observations by final theta and eyeballing which ones had gone negative despite a positive raw BT score.
 
 ### What I actually shipped because of it
 
@@ -175,7 +170,7 @@ The table below comes from `submission_ensemble.csv`, the confidence-pre-shrunk 
 | 9 | ethereum/consensus-specs | 2.46% | 13 | human |
 | 10 | foundry-rs/foundry | 2.38% | 33 | human |
 
-This table is worth being upfront about: it's pulled straight from `model2_diagnostics.txt`, which was generated from the confidence-pre-shrunk ensemble, before I decided to remove that step. I don't have an equally complete rank table for `submission_no_conf_ensemble.csv`, the file I actually submitted, since the diagnostics writer in the pipeline runs against the older candidate. What I can say with confidence, based on the double-shrinkage diagnostic above: in the submitted file, consensus-specs, aderyn, risc0-ethereum, and blst all sit higher than they do in this table, and everything else shifts down slightly to compensate, since weights have to sum to 1 either way. The top of the ranking (go-ethereum, Solidity, Lighthouse, EIPs, OpenZeppelin) is stable across both versions; it's the sparse-but-genuinely-important repos in the middle of the pack where the two files actually disagree.
+This table is worth being upfront about: it's pulled straight from `model2_diagnostics.txt`, which was generated from the confidence-pre-shrunk ensemble, before I decided to remove that step. What I can say with confidence, based on the double-shrinkage diagnostic above: in the submitted file, consensus-specs, aderyn, risc0-ethereum, and blst all sit higher than they do in this table, and everything else shifts down slightly to compensate, since weights have to sum to 1 either way. The top of the ranking (go-ethereum, Solidity, Lighthouse, EIPs, OpenZeppelin) is stable across both versions; it's the sparse-but-genuinely-important repos in the middle of the pack where the two files actually disagree.
 
 ## A second signal hiding in the jury's reasoning text 😅
 
@@ -189,28 +184,16 @@ A few real examples, quoted directly from the dataset:
 - *"client devs need more secure funding sources than the mev folks i'd say"* (nethermind vs rbuilder)
 - *"Erigon was built without major VC funding, and was much more performant than Reth"* (erigon vs reth)
 
-None of these are claims about which repo Ethereum depends on more. They're claims about which repo *deserves more grant money right now*, which is a related but genuinely different question. Underfunded-but-important and unimportant-but-underfunded look identical from this kind of reasoning alone, and the competition's scoring is explicitly about the former. The model can't read this text (the BT fit only ever sees the numeric multiplier, not the justification), so this noise enters purely through whatever multiplier value the juror picked while thinking about funding need rather than contribution. There's no clean way to filter it out after the fact without the reasoning text itself as a feature, which I didn't build in this round.
+None of these are claims about which repo Ethereum depends on more. They're claims about which repo *deserves more grant money right now*, which is a related but genuinely different question. Underfunded-but-important and unimportant-but-underfunded look identical from this kind of reasoning alone, and the competition's scoring is explicitly about the former. The model can't read this text, so this noise enters purely through whatever multiplier value the juror picked while thinking about funding need rather than contribution. There's no clean way to filter it out after the fact without the reasoning text itself as a feature, which I didn't build in this round.
 
-One small silver lining I noticed only because I went looking: the one row where a juror wrote, almost verbatim, "it needs more funding but I really don't know between these two" (risc0 vs rbuilder, multiplier 1.1) gets dropped automatically anyway. Not because anyone flagged it as low-confidence, but because it happens to fall on the exact 1.1 multiplier value that's already being filtered out as a known data-release bug. A happy accident, not a feature I get credit for engineering on purpose.
-
-If I were extending this, the obvious next step is a lightweight classifier (or even a keyword pass) over the reasoning text to flag funding-need framing and either down-weight or exclude those rows, the same way the model already excludes the multiplier=1.1 rows for an unrelated data-quality reason.
-
-## What I'd do differently
-
-The Grok supplement for aderyn/risc0/blst helped, but only partially, and the risc0 case shows that "more LLM comparisons" isn't a reliable lever to pull when you need a specific repo's signal to improve. I'd want a second LLM source or a different prompting strategy before leaning on this again. The double-shrinkage bug also makes me want a more principled single-stage shrinkage scheme next time rather than two independently-motivated discount factors that happen to compound: something like a single confidence term that explicitly accounts for both observation count and how it's about to be blended downstream, instead of bolting a second shrinkage on top after the first one's already been applied. And the funding-need noise in the reasoning text is a real, identifiable signal contamination problem that I noticed too late in this round to do anything about beyond flagging it here.
-
-## Reproducing this
-
-```
-TRAIN_WEIGHT    = 0.2     # discount on previous-round jury data
-TRAIN_MULT_CAP  = 100.0   # clip extreme train.csv multipliers
-CONFIDENCE_K    = 10.0    # confidence(repo) = obs / (obs + 10)  [no-conf submission skips this]
-OBS_THRESHOLD   = 4       # min observations to be a Ridge training target
-λ ∈ {3, 5, 10}             # shrinkage ensemble, softmaxed and averaged per repo
-```
-
-Dependencies: `numpy`, `pandas`, `scipy`, `scikit-learn`, `networkx`. `model_v2.py` is the final pipeline and the one to run; `bt_diagnostics.py` is an earlier checkpoint kept in the repo for reference (no Grok supplement, no no-confidence ensemble, no T=1.15 experiment), useful mainly if you want to see what the pipeline looked like before the double-shrinkage diagnosis. Both scripts write their submission CSVs, a `model2_diagnostics.txt` summary, and the full set of charts above into a local `charts/` folder; chart generation is wrapped in a try/except so a missing `matplotlib` or a chart-only bug never blocks the actual submission files from being written.
+One small silver lining I noticed only because I went looking: the one row where a juror wrote, "it needs more funding but I really don't know between these two" (risc0 vs rbuilder, multiplier 1.1) gets dropped automatically anyway. Because it happens to fall on the exact 1.1 multiplier value that's already being filtered out as a known data-release bug.
 
 ## Closing thoughts
 
-Most of the real work here wasn't picking a fancier model. Huber BT and RidgeCV are both about as standard as this category of problem gets. It was building diagnostics specific enough to catch failure modes that a leaderboard score alone would never surface: a sparse repo with a lucky multiplier outranking a piece of core infrastructure, or a fix for that exact problem quietly introducing a *second* problem one layer downstream. The Vyper/Viem anomaly and the double-shrinkage bug are, in a sense, the same underlying issue ("how much should I trust a score with very little evidence behind it") showing up twice in two different parts of the pipeline, and the second time was harder to catch precisely because the first fix looked like it had worked.
+The biggest challenge in this project was not choosing a more complex model. The Bradley-Terry and Ridge models are well-known and relatively standard approaches. The real challenge was building diagnostics that could uncover hidden problems in the pipeline.
+
+For example, the diagnostics revealed that some repositories with only a few comparisons, such as Vyper and Viem, were receiving unusually high scores because of limited evidence. Later, they also helped uncover a second issue: the model was reducing the influence of sparse repositories twice, causing some legitimate repositories to be pushed down too much.
+
+Interestingly, both problems came from the same underlying question: how much should we trust a score when it is based on very little data? The first issue made some sparse repositories look too important, while the second issue made some sparse repositories look less important than they should have been.
+
+Finding and fixing these issues had a much bigger impact on the final model than adding new features or trying more sophisticated algorithms.
