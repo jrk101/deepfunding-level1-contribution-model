@@ -177,7 +177,7 @@ The table below comes from `submission_ensemble.csv`, the confidence-pre-shrunk 
 
 This table is worth being upfront about: it's pulled straight from `model2_diagnostics.txt`, which was generated from the confidence-pre-shrunk ensemble, before I decided to remove that step. I don't have an equally complete rank table for `submission_no_conf_ensemble.csv`, the file I actually submitted, since the diagnostics writer in the pipeline runs against the older candidate. What I can say with confidence, based on the double-shrinkage diagnostic above: in the submitted file, consensus-specs, aderyn, risc0-ethereum, and blst all sit higher than they do in this table, and everything else shifts down slightly to compensate, since weights have to sum to 1 either way. The top of the ranking (go-ethereum, Solidity, Lighthouse, EIPs, OpenZeppelin) is stable across both versions; it's the sparse-but-genuinely-important repos in the middle of the pack where the two files actually disagree.
 
-## A second signal hiding in the jury's reasoning text
+## A second signal hiding in the jury's reasoning text 😅
 
 While going back through `pairwise_data.csv`, I noticed something the model never sees: a meaningful chunk of the *reasoning* jurors wrote alongside their multipliers isn't actually about contribution to Ethereum. It's about funding need.
 
