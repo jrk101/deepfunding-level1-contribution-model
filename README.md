@@ -153,9 +153,7 @@ This is the chart I built specifically to hunt for the Vyper/Viem-style failure 
 
 ### Diagnostic ranking snapshot (pre-fix candidate, not the submitted file)
 
-The table below comes from `submission_ensemble.csv`, the confidence-pre-shrunk candidate I have the most complete diagnostics dump for. It is **not** `submission_no_conf_ensemble.csv`, the file I actually submitted. I'm including it because the diagnostics writer ran against this older candidate; see the note below the table for how the real submission differs.
-
-![Top 20 repository contributions to Ethereum](charts/top20_final_ranking.png)
+This table is pulled directly from model2_diagnostics.txt, which was generated from the confidence-pre-shrunk ensemble before I removed that step. The final submitted model (submission_no_conf_ensemble.csv) differs primarily in how sparse repositories are treated. Removing the confidence pre-shrinkage increased the influence of several repositories with limited but meaningful evidence, while slightly reducing the relative weight of more heavily observed repositories so that the weights still sum to one. The very top of the ranking remained largely stable across both versions; most of the differences occurred among repositories in the middle of the distribution where observation counts were lower.
 
 | Rank | Repo | Weight | Obs | Coverage |
 |---|---|---|---|---|
@@ -170,7 +168,6 @@ The table below comes from `submission_ensemble.csv`, the confidence-pre-shrunk 
 | 9 | ethereum/consensus-specs | 2.46% | 13 | human |
 | 10 | foundry-rs/foundry | 2.38% | 33 | human |
 
-This table is worth being upfront about: it's pulled straight from `model2_diagnostics.txt`, which was generated from the confidence-pre-shrunk ensemble, before I decided to remove that step. What I can say with confidence, based on the double-shrinkage diagnostic above: in the submitted file, consensus-specs, aderyn, risc0-ethereum, and blst all sit higher than they do in this table, and everything else shifts down slightly to compensate, since weights have to sum to 1 either way. The top of the ranking (go-ethereum, Solidity, Lighthouse, EIPs, OpenZeppelin) is stable across both versions; it's the sparse-but-genuinely-important repos in the middle of the pack where the two files actually disagree.
 
 ## A second signal hiding in the jury's reasoning text 😅
 
