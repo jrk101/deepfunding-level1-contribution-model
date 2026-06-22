@@ -181,9 +181,11 @@ A few real examples, quoted directly from the dataset:
 - *"client devs need more secure funding sources than the mev folks i'd say"* (nethermind vs rbuilder)
 - *"Erigon was built without major VC funding, and was much more performant than Reth"* (erigon vs reth)
 
-None of these are claims about which repo Ethereum depends on more. They're claims about which repo *deserves more grant money right now*, which is a related but genuinely different question. Underfunded-but-important and unimportant-but-underfunded look identical from this kind of reasoning alone, and the competition's scoring is explicitly about the former. The model can't read this text, so this noise enters purely through whatever multiplier value the juror picked while thinking about funding need rather than contribution. There's no clean way to filter it out after the fact without the reasoning text itself as a feature, which I didn't build in this round.
+None of these are claims about which repo Ethereum depends on more. They're claims about which repo *deserves more grant money right now*, which is a related but genuinely different question. Underfunded-but-important and unimportant-but-underfunded can look similar when viewed only through funding need, whereas the competition is explicitly trying to measure contribution.
 
-One small silver lining I noticed only because I went looking: the one row where a juror wrote, "it needs more funding but I really don't know between these two" (risc0 vs rbuilder, multiplier 1.1) gets dropped automatically anyway. Because it happens to fall on the exact 1.1 multiplier value that's already being filtered out as a known data-release bug.
+Since the model only sees the pairwise comparisons and multipliers, this type of noise enters indirectly through the values chosen by jurors. I considered filtering or down-weighting such comparisons, but ultimately decided against it. The public human dataset contains only 156 comparisons, and removing additional observations would further reduce coverage for an already sparse problem. Given the limited amount of human data available, I chose to retain all valid comparisons and treat funding-oriented reasoning as a source of label noise rather than attempting to manually remove specific judgments.
+
+One small observation from reviewing the reasoning text: one juror explicitly wrote something very close to "it needs more funding but I really don't know between these two" for the risc0-ethereum vs rbuilder comparison. Interestingly, that comparison was removed from the final dataset anyway because it used the exact 1.1 multiplier value that was later identified as part of the data-release bug and filtered during preprocessing.
 
 ## Closing thoughts
 
