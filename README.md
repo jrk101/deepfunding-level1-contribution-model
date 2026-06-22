@@ -35,7 +35,7 @@ I'll explain the pipeline the way I actually debugged it: in the order the bugs 
 | `seedReposWithNoTransitiveDependencies.json` | dependency edges, used to build reverse-dependency counts and a PageRank score over the 98-repo graph |
 | `repos_to_predict.csv` | the actual 98-repo target list |
 
-One note on `train.csv`: the organizers released the previous round's jury data specifically as public training material for this round, so using it is not a leakage concern. Since the previous round covered only 45 repositories while this contest evaluates 98 repositories, I use it as a weak prior (20% weight) rather than relying on it as ground truth.
+One note on `train.csv`: this dataset was intentionally provided by the organizers for participants to use during model development. Because it comes from an earlier round with only 45 repositories, I used it as a weak prior (20% weight) instead of treating it as a direct representation of the current jury.
 
 
 ## Step 1: Human Bradley-Terry, and why a repo's "observation count" turned out to be the single most important number in this whole project
@@ -141,7 +141,7 @@ The spread between the largest and smallest predicted weight goes from 16.7x (or
 
 ## Results, gathered in one place
 
-**Coverage:** 71 of 98 target repos have at least one human jury comparison (current round + previous round combined); 57 of those have 4+ observations and were used to train the Ridge feature prior; the remaining 27 repos have zero human or human-anchored comparisons and are priced entirely by the calibrated LLM score and the feature prior.
+**Coverage:** 71 of 98 target repos have at least one human jury comparison (current round + previous round combined); 57 of those have 4+ observations and were used to train the Ridge feature prior; the remaining 27 repos have zero human jury comparisons and therefore rely primarily on the calibrated LLM signal and the feature prior.
 
 ![Distribution of pairwise observation counts](charts/observation_distribution.png)
 
@@ -150,23 +150,6 @@ The shape here is the whole reason this project needed three separate signal sou
 ![Sparse high-scoring repositories](charts/sparse_repo_scatter.png)
 
 This is the chart I built specifically to hunt for the Vyper/Viem-style failure mode across the whole repo set, not just the two I already knew about. Aderyn, risc0-ethereum, and blst all sit in the "very few observations, surprisingly high raw BT theta" zone in the upper-left: exactly the profile that needs the Grok supplement and careful shrinkage rather than being taken at face value. Vyper and Viem, after the fixes above, have moved out of that danger zone into the broad, well-populated middle of the chart along with everything else that has 30+ observations.
-
-### Diagnostic ranking snapshot (pre-fix candidate, not the submitted file)
-
-This table is pulled directly from model2_diagnostics.txt, which was generated from the confidence-pre-shrunk ensemble before I removed that step. The final submitted model (submission_no_conf_ensemble.csv) differs primarily in how sparse repositories are treated. Removing the confidence pre-shrinkage increased the influence of several repositories with limited but meaningful evidence, while slightly reducing the relative weight of more heavily observed repositories so that the weights still sum to one. The very top of the ranking remained largely stable across both versions; most of the differences occurred among repositories in the middle of the distribution where observation counts were lower.
-
-| Rank | Repo | Weight | Obs | Coverage |
-|---|---|---|---|---|
-| 1 | ethereum/go-ethereum | 5.20% | 76 | human |
-| 2 | argotorg/solidity | 3.96% | 51 | human |
-| 3 | sigp/lighthouse | 3.74% | 54 | human |
-| 4 | ethereum/eips | 3.24% | 25 | human |
-| 5 | openzeppelin/openzeppelin-contracts | 2.75% | 46 | human |
-| 6 | nethermindeth/nethermind | 2.63% | 39 | human |
-| 7 | prysmaticlabs/prysm | 2.54% | 52 | human |
-| 8 | nomicfoundation/hardhat | 2.52% | 34 | human |
-| 9 | ethereum/consensus-specs | 2.46% | 13 | human |
-| 10 | foundry-rs/foundry | 2.38% | 33 | human |
 
 
 ## A second signal hiding in the jury's reasoning text 😅
